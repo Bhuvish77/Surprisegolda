@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Bestie | Ansley</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+
+        :root {
+            --glass: rgba(255, 255, 255, 0.25);
+            --text: #7209b7;
+            --accent: #ff4d6d;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+        }
+
+        /* DYNAMIC GRADIENT BACKGROUND (No Black) */
+        .gradient-bg {
+            position: fixed; width: 100%; height: 100%;
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffecd2, #fcb69f);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* LOGIN INTERFACE */
+        #login-wrap {
+            position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+            z-index: 100; transition: all 1s ease-in-out;
+        }
+
+        .glass-box {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            padding: 50px; border-radius: 40px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 380px;
+        }
+
+        h2 { font-family: 'Playfair Display', serif; color: var(--text); font-size: 2rem; }
+
+        input {
+            width: 100%; padding: 15px; margin: 15px 0; border: none;
+            border-bottom: 2px solid var(--accent); background: transparent;
+            color: var(--text); font-size: 1.1rem; text-align: center; outline: none;
+        }
+
+        #hint { color: #d63384; font-size: 0.9rem; font-style: italic; margin-bottom: 15px; }
+
+        .unlock-btn {
+            background: var(--accent); color: white; border: none;
+            padding: 15px 40px; border-radius: 50px; font-weight: bold;
+            cursor: pointer; transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.3);
+        }
+
+        .unlock-btn:hover { transform: scale(1.1); background: #ff758f; }
+
+        /* CINEMATIC THEATRE */
+        #theatre {
+            display: none; width: 100%; height: 100%; position: relative;
+        }
+
+        .slide {
+            position: absolute; inset: 0; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; opacity: 0;
+            transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(50px) scale(0.9);
+        }
+
+        .slide.active { opacity: 1; transform: translateY(0) scale(1); }
+
+        .slide img {
+            max-width: 80%; max-height: 60vh;
+            border-radius: 30px; border: 10px solid white;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+        }
+
+        .caption {
+            font-family: 'Dancing Script', cursive; font-size: 4rem;
+            color: #590d22; margin-top: 40px;
+            animation: bounceIn 1s ease;
+        }
+
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* FINAL HEARTFELT NOTE */
+        #final-note {
+            display: none; position: fixed; inset: 0;
+            background: white; /* Clean, beautiful white-to-pink */
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe3e3 100%);
+            overflow-y: auto; padding: 80px 20px; text-align: center;
+        }
+
+        .letter {
+            max-width: 800px; margin: 0 auto; color: #4a051c;
+            line-height: 2; font-size: 1.4rem;
+        }
+
+        /* FLOATING ELEMENTS */
+        .bubble {
+            position: absolute; bottom: -100px; background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%; animation: rise 10s infinite ease-in; pointer-events: none;
+        }
+
+        @keyframes rise {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <audio id="bg-music" loop>
+        <source src="Oru_Paathi_Kadhavu_HaricharanVandana_Srinivasan.mp3" type="audio/mpeg">
+    </audio>
+    <div class="gradient-bg" id="bubble-container"></div>
+
+    <div id="login-wrap">
+        <div class="glass-box">
+            <h2 style="margin-top:0;">Accessing Memories...</h2>
+            <input type="text" id="username" placeholder="Username" value="Ansley" readonly>
+            <input type="password" id="password" placeholder="The Secret Word">
+            <p id="hint">Hint: What do you call me always?!</p>
+            <button class="unlock-btn" onclick="verify()">START EXPERIENCE</button>
+        </div>
+    </div>
+
+    <div id="theatre">
+        <div class="slide" id="s1">
+            <img src="Pic1.jpg">
+            <div class="caption">The Best Beginning...</div>
+        </div>
+        <div class="slide" id="s2">
+            <img src="Pic2.jpg">
+            <div class="caption">Logic & Smiles. 👍</div>
+        </div>
+        <div class="slide" id="s3">
+            <img src="Pic3.jpg">
+            <div class="caption">Our Cinema Crew! 🍿</div>
+        </div>
+        <div class="slide" id="s4">
+            <img src="pic4.jpg">
+            <div class="caption">Hackathon Heroes. ❤️</div>
+        </div>
+    </div>
+
+    <div id="final-note">
+        <div class="letter">
+            <h1 style="font-family: 'Dancing Script'; font-size: 5rem; color: #ff4d6d;">Dear Ansley,</h1>
+            <p>Ansley Namma Epdi ivlo best Friends aanom nu therla and Unakku Nyabagam irukku nu nenaikura first ah namma meet pannathukana reason <b style="color:#ff4d6d">"Hackathon"</b>.</p>
+            <p>Andha hackthon pathi ipa think pannalum sirippu dhan varudhu final ah namma friends aanadhu dhan andha Hackthon oda Final Output eh!!</p>
+            <p>Indha maari surprises na life yaaruku pannadhu illa unaku yaen panranu therla but you always own a special place in my life <b style="color:#ff4d6d">Eruma</b>, en nee enakku ivlo close aana nu ipa kuda enaku valid reason therla bcuz logic think panra enalayae logic find panna mudila!!!</p>
+            <p>I wish you a very Happy and Prosperous Life including all the necessities and aspects you're manifesting for!!!</p>
+            <br>
+            <h2 style="font-size: 2.5rem; color: #ff4d6d;">"Infofys Intern ah Porakku Ready Ahhhhh!!!!!! Work Pannalama 🔥"</h2>
+            <br>
+            <p style="font-style: italic; opacity: 0.6;">Dedicated to my Favorite Eruma</p>
+        </div>
+    </div>
+
+    <script>
+        // Create Floating Bubbles
+        const container = document.getElementById('bubble-container');
+        function createBubble() {
+            const b = document.createElement('div');
+            b.className = 'bubble';
+            let size = Math.random() * 60 + 10 + 'px';
+            b.style.width = size; b.style.height = size;
+            b.style.left = Math.random() * 100 + 'vw';
+            b.style.animationDuration = Math.random() * 8 + 4 + 's';
+            container.appendChild(b);
+            setTimeout(() => b.remove(), 10000);
+        }
+        setInterval(createBubble, 400);
+
+        let tries = 0;
+        function verify() {
+            const p = document.getElementById('password').value;
+            const h = document.getElementById('hint');
+            const music = document.getElementById('bg-music');
+            if (p === "HeyEruma") {
+                music.play().catch(error => console.log("Music blocked by browser:", error));
+                music.volume = 0.5; // Set volume to 50%
+                document.getElementById('login-wrap').style.transform = "translateY(-100vh)";
+                setTimeout(() => {
+                    document.getElementById('login-wrap').style.display = "none";
+                    document.getElementById('theatre').style.display = "block";
+                    startShow(1);
+                }, 1000);
+            } else {
+                tries++;
+                if(tries >= 3) {
+                    h.innerHTML = "Password is: <b style='color:#7209b7'>HeyEruma</b>";
+                    document.getElementById('password').value = "HeyEruma";
+                } else {
+                    h.innerText = "Nope! Hint: The name you call me to irritate me!";
+                }
+            }
+        }
+
+        function startShow(n) {
+            const slides = document.querySelectorAll('.slide');
+            if(n > slides.length) {
+                setTimeout(() => {
+                    document.getElementById('theatre').style.opacity = "0";
+                    setTimeout(() => {
+                        document.getElementById('theatre').style.display = "none";
+                        document.getElementById('final-note').style.display = "block";
+                    }, 1500);
+                }, 3000);
+                return;
+            }
+            slides.forEach(s => s.classList.remove('active'));
+            slides[n-1].classList.add('active');
+            setTimeout(() => startShow(n+1), 7000);
+        }
+    </script>
+</body>
+</html>
